@@ -15,7 +15,7 @@ from struct import pack, unpack
 from Crypto.Cipher import AES
 from scapy.all import *
 
-from wpscrack import Dot11EltRates
+from wpscrack import Dot11EltRates, Dot11EltExtRates
 
 
 class WPSCrack:
@@ -150,7 +150,8 @@ class WPSCrack:
                                                  addr3=self.bssid, addr1=self.bssid, SC=0, type=0) \
             / Dot11AssoReq(listen_interval=5, cap=12548) \
             / Dot11Elt(info=self.ssid, ID=0, len=len(self.ssid)) \
-            / Dot11EltRates()
+            / Dot11EltSupportedRates() \
+            / Dot11EltExtendedSupportedRates()
 
         # / Dot11Elt(info='\x02\x04\x0b\x16\x0c\x12\x18$', ID=1, len=8) \
         # / Dot11Elt(info='0H`l', ID=50, len=4) \
