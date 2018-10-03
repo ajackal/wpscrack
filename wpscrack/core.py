@@ -15,7 +15,31 @@ from struct import pack, unpack
 from Crypto.Cipher import AES
 from scapy.all import *
 
-from wpscrack import Dot11EltRates, Dot11EltExtRates
+# from wpscrack import Dot11EltRates, Dot11EltExtRates
+
+
+class Dot11EltSupportedRates(Packet):
+    """ Definition of the Supported Rates for 802.11n"""
+    name = "802.11n Supported Rates Informational Element"
+    # Supported Rates 1(B), 2(B), 5.5(B), 11(B), 18, 24, 36, and 54 Mbps
+    supported_rates = [0x82, 0x84, 0x8b, 0x96, 0x24, 0x30, 0x48, 0x6c]
+    fields_desc = [ByteField("ID", 1), ByteField("len", len(supported_rates))]
+    index = 0
+    for rate in supported_rates:
+        fields_desc.append(ByteField("supported_rate{0}".format(index), rate))
+        index += 1
+
+
+class Dot11EltExtendedSupportedRates(Packet):
+    """ Definition of the Extended Supported Rates for 802.11n"""
+    name = "802.11n Extended Supported Rates Informational Element"
+    # Extended Supported Rates 6, 9, 12, and 48 Mbps
+    extended_supported_rates = [0x0c, 0x12, 0x18, 0x60]
+    fields_desc = [ByteField("ID", 50), ByteField("len", len(extended_supported_rates))]
+    index = 0
+    for rate in extended_supported_rates:
+        fields_desc.append(ByteField("extended_supported_rate{0}".format(index), rate))
+        index += 1
 
 
 class WPSCrack:
@@ -148,10 +172,11 @@ class WPSCrack:
         
         association_request = RadioTap() / Dot11(proto=0, FCfield=0, subtype=0, addr2=self.client_mac,
                                                  addr3=self.bssid, addr1=self.bssid, SC=0, type=0) \
-            / Dot11AssoReq(listen_interval=5, cap=12548) \
+            / Dot11AssoReq(listen_interval=0x000a, cap=0x0531) \
             / Dot11Elt(info=self.ssid, ID=0, len=len(self.ssid)) \
             / Dot11EltSupportedRates() \
-            / Dot11EltExtendedSupportedRates()
+            / Dot11EltExtendedSupportedRates() \
+            # / Dot11EltHighThroughputCapabilities()
 
         # / Dot11Elt(info='\x02\x04\x0b\x16\x0c\x12\x18$', ID=1, len=8) \
         # / Dot11Elt(info='0H`l', ID=50, len=4) \

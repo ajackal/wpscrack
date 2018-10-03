@@ -2,7 +2,7 @@ from scapy.all import *
 
 
 class Dot11EltExtendedSupportedRates(Packet):
-    """ Definition of the Supported Rates for 802.11n"""
+    """ Definition of the Extended Supported Rates for 802.11n"""
     name = "802.11n Extended Supported Rates Informational Element"
     # Extended Supported Rates 6, 9, 12, and 48 Mbps
     extended_supported_rates = [0x0c, 0x12, 0x18, 0x60]
