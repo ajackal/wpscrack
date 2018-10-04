@@ -18,8 +18,7 @@ class Dot11EltHighThroughputCapabilities(Packet):
 
     fields_desc = [ByteField("ID", 45),
                    ByteField("len", 26),
-                   XByteField("HT Capabilities Info 1", 0x20),
-                   XByteField("HT Capabilities Info 2", 0x00),
+                   XShortField("HT Capabilities Info", 0x2000),
                    XByteField("A-MPDU Parameters", 0x1a)]
 
     for rate in rx_supported_mcs:
