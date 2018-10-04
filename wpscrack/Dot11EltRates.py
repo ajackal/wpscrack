@@ -9,5 +9,5 @@ class Dot11EltSupportedRates(Packet):
     fields_desc = [ByteField("ID", 1), ByteField("len", len(supported_rates))]
     index = 0
     for rate in supported_rates:
-        fields_desc.append(ByteField("supported_rate{0}".format(index), rate))
+        fields_desc.append(ByteField("Supported Rate {0}".format(index), rate))
         index += 1
